@@ -84,7 +84,7 @@ const App = () => {
             authProvider={authProvider.current}
             dataProvider={dataProvider.current}
             i18nProvider={i18nProvider}
-            title="SOIL Sensor Map"
+            title="MACE Map"
             layout={Layout}
         >
             {permissions => (
