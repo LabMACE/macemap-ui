@@ -9,17 +9,16 @@ import {
     DeleteButton,
     usePermissions,
 } from "react-admin";
-import { LocationFieldPoints } from '../maps/Points';
 
 
-const AreaTitle = () => {
+const SiteTitle = () => {
     const record = useRecordContext();
     // the record can be empty while loading
     if (!record) return null;
     return <span>{record.place} Area</span>;
 };
 
-const AreaShowActions = () => {
+const SiteShowActions = () => {
     const { permissions } = usePermissions();
     return (
         <TopToolbar>
@@ -31,20 +30,13 @@ const AreaShowActions = () => {
     );
 }
 
-export const AreaShow = () => (
-    <Show title={<AreaTitle />} actions={<AreaShowActions />}>
+export const SiteShow = () => (
+    <Show title={<SiteTitle />} actions={<SiteShowActions />}>
         <SimpleShowLayout>
             <TextField source="name" />
             <TextField source="description" />
-            <ReferenceManyCount
-                label="Sensors"
-                reference="sensors"
-                target="area_id"
-                link
-            />
-            <LocationFieldPoints source="sensors.geom" />
         </SimpleShowLayout>
     </Show>
 );
 
-export default AreaShow;
+export default SiteShow;

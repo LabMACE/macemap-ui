@@ -6,7 +6,7 @@ import {
     required
 } from 'react-admin';
 
-const AreaEdit = () => {
+const SiteEdit = () => {
     return (
         <Edit>
             <SimpleForm>
@@ -18,4 +18,4 @@ const AreaEdit = () => {
     )
 };
 
-export default AreaEdit;
+export default SiteEdit;

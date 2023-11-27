@@ -20,11 +20,10 @@ import { keycloakAuthProvider, httpClient } from 'ra-keycloak';
 import i18nProvider from './i18nProvider';
 import Layout from './Layout';
 import users from './users';
-import sensors from './sensors';
-import areas from "./areas";
+import sites from "./sites";
 import axios from 'axios';
 import addUploadCapabilities from './addUploadFeature'
-import SensorDataShow from './sensors/SensorDataShow';
+import fieldcampaigns from './fieldcampaigns';
 const initOptions: KeycloakInitOptions = { onLoad: 'login-required' };
 
 const getPermissions = (decoded: KeycloakTokenParsed) => {
@@ -84,14 +83,15 @@ const App = () => {
             authProvider={authProvider.current}
             dataProvider={dataProvider.current}
             i18nProvider={i18nProvider}
-            title="MACE Map"
+            title="MaceMap"
             layout={Layout}
         >
             {permissions => (
                 <>
-                    <Resource name="areas" {...areas} />
-                    <Resource name="sensors" {...sensors.sensor} />
-                    <Resource name="sensordata" {...sensors.sensordata} />
+                    <Resource
+                        name="fieldcampaigns"
+                        {...fieldcampaigns} />
+                    <Resource name="sites" {...sites} />
                     {permissions ? (
                         <>
                             {permissions === 'admin' ? (

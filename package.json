@@ -1,5 +1,5 @@
 {
-  "name": "sensormap-frontend",
+  "name": "macemap",
   "private": true,
   "scripts": {
     "dev": "vite",

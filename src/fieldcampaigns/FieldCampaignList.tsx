@@ -2,19 +2,15 @@ import {
     List,
     Datagrid,
     TextField,
-    ReferenceManyCount,
-    useGetList,
     usePermissions,
     TopToolbar,
     CreateButton,
     ExportButton,
-    ArrayField,
-    Count,
+    ReferenceManyCount,
 } from "react-admin";
-import { LocationFieldAreas } from '../maps/Areas';
 
 
-const AreaListActions = () => {
+const FieldCampaignListActions = () => {
     const { permissions } = usePermissions();
     return (
         <TopToolbar>
@@ -24,24 +20,17 @@ const AreaListActions = () => {
     );
 }
 
-export const AreaList = () => {
-    const { data, total, isLoading, error } = useGetList(
-        'areas', {}
-    );
-
-    if (isLoading) return <p>Loading areas...</p>;
+export const FieldCampaignList = () => {
 
     return (
-        <List actions={<AreaListActions />}>
-            <LocationFieldAreas
-                areas={data} />
+        <List actions={<FieldCampaignListActions />}>
             <Datagrid rowClick="show">
                 <TextField source="name" />
                 <TextField source="description" />
                 <ReferenceManyCount
-                    label="Sensors"
-                    reference="sensors"
-                    target="area_id"
+                    label="Sites"
+                    reference="sites"
+                    target="field_campaign_id"
                     link
                 />
             </Datagrid>
@@ -51,4 +40,4 @@ export const AreaList = () => {
 
 
 
-export default AreaList;
+export default FieldCampaignList;

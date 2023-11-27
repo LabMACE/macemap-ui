@@ -1,6 +1,6 @@
 # Development docker-compose. Assuming the folders of BBF/API are in the folders
-# relative to this repository, point /etc/hosts to soil 127.0.0.1 and connect
-# to http://soil:88
+# relative to this repository, point /etc/hosts to mace 127.0.0.1 and connect
+# to http://mace:88
 
 version: '3.8'
 
@@ -16,48 +16,48 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
-  soil-api:
+  mace-api:
     build:
-      context: ../soil-api
+      context: ../mace-api
     environment:
-      - DB_HOST=sensormap-db
+      - DB_HOST=macemap-db
       - DB_PORT=5432
       - DB_USER=postgres
       - DB_PASSWORD=psql
       - DB_NAME=postgres
       - DB_PREFIX=postgresql+asyncpg
     depends_on:
-        - sensormap-db
+        - macemap-db
     volumes:
-      - ../soil-api/app:/app/app
+      - ../mace-api/app:/app/app
 
-  sensormap-bff:
+  macemap-bff:
     build:
-      context: ../sensormap-bff
+      context: ../macemap-bff
     environment:
-      - KEYCLOAK_CLIENT_ID=sensormap-frontend-local
-      - KEYCLOAK_REALM=SOIL
+      - KEYCLOAK_CLIENT_ID=macemap-local
+      - KEYCLOAK_REALM=MACE
       - KEYCLOAK_URL=https://enac-it4r-sso.epfl.ch/
-      - SOIL_API_URL=http://soil-api:8000
+      - MACE_API_URL=http://mace-api:8000
     labels:
-      - "traefik.http.routers.sensormap-bff.rule=Host(`soil`) && PathPrefix(`/api`)"
-      - "traefik.http.services.sensormap-bff.loadbalancer.server.port=8000"
+      - "traefik.http.routers.macemap-bff.rule=Host(`mace`) && PathPrefix(`/api`)"
+      - "traefik.http.services.macemap-bff.loadbalancer.server.port=8000"
     volumes:
-      - ../sensormap-bff/app:/app/app
+      - ../macemap-bff/app:/app/app
     entrypoint: ["uvicorn", "--host=0.0.0.0",
               "--timeout-keep-alive=0", "app.main:app", "--reload"]
 
-  sensormap-ui:
+  macemap-ui:
     build:
       context: .
       dockerfile: Dockerfile.dev  # Uses the dockerfile containing yarn dev
     labels:
-      - "traefik.http.routers.sensormap-ui.rule=Host(`soil`)"
-      - "traefik.http.services.sensormap-ui.loadbalancer.server.port=5173"
+      - "traefik.http.routers.macemap-ui.rule=Host(`mace`)"
+      - "traefik.http.services.macemap-ui.loadbalancer.server.port=5173"
     volumes:
-      - ../sensormap-ui:/app
+      - ../macemap-ui:/app
 
-  sensormap-db:
+  macemap-db:
     image: postgis/postgis:16-master
     environment:
       - POSTGRES_USER=postgres
@@ -66,7 +66,7 @@ services:
     ports:
       - 5433:5432
     volumes:
-      - sensormap-db-data:/var/lib/postgresql/data
+      - macemap-db-data:/var/lib/postgresql/data
 
 volumes:
-  sensormap-db-data:
+  macemap-db-data:
