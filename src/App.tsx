@@ -3,13 +3,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import {
     Admin,
     Resource,
-    CustomRoutes,
     AuthProvider,
     DataProvider,
-    AppBar,
-    TitlePortal,
 } from 'react-admin';
-import { Route } from 'react-router-dom';
 import simpleRestProvider from 'ra-data-simple-rest';
 import Keycloak, {
     KeycloakConfig,
@@ -17,12 +13,12 @@ import Keycloak, {
     KeycloakInitOptions,
 } from 'keycloak-js';
 import { keycloakAuthProvider, httpClient } from 'ra-keycloak';
-import i18nProvider from './i18nProvider';
 import Layout from './Layout';
 import users from './users';
-import sites from "./sites";
 import axios from 'axios';
 import addUploadCapabilities from './addUploadFeature'
+import sites from "./sites";
+import subsites from "./subsites";
 import fieldcampaigns from './fieldcampaigns';
 const initOptions: KeycloakInitOptions = { onLoad: 'login-required' };
 
@@ -82,7 +78,6 @@ const App = () => {
         <Admin
             authProvider={authProvider.current}
             dataProvider={dataProvider.current}
-            i18nProvider={i18nProvider}
             title="MaceMap"
             layout={Layout}
         >
@@ -92,6 +87,7 @@ const App = () => {
                         name="fieldcampaigns"
                         {...fieldcampaigns} />
                     <Resource name="sites" {...sites} />
+                    <Resource name="subsites" {...subsites} />
                     {permissions ? (
                         <>
                             {permissions === 'admin' ? (

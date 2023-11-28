@@ -16,7 +16,7 @@ import {
 } from "react-admin";
 
 
-const SiteListActions = () => {
+const SubSiteListActions = () => {
     const { permissions } = usePermissions();
     return (
         <TopToolbar>
@@ -26,10 +26,10 @@ const SiteListActions = () => {
     );
 }
 
-export const SiteList = () => {
+export const SubSiteList = () => {
 
     return (
-        <List actions={<SiteListActions />} disableSyncWithLocation>
+        <List actions={<SubSiteListActions />} disableSyncWithLocation>
             <Datagrid rowClick="show">
                 <TextField source="name" />
                 <TextField source="description" />
@@ -38,8 +38,8 @@ export const SiteList = () => {
                 <NumberField source="longitude" />
                 <DateField source="created_at" />
                 <ReferenceField
-                    source='field_campaign_id'
-                    reference='fieldcampaigns'
+                    source='site_id'
+                    reference='sites'
                     link="show"
                 >
                     <TextField source='name' />
@@ -51,4 +51,4 @@ export const SiteList = () => {
 
 
 
-export default SiteList;
+export default SubSiteList;

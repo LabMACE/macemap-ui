@@ -8,6 +8,10 @@ import {
     EditButton,
     DeleteButton,
     usePermissions,
+    ReferenceManyField,
+    Datagrid,
+    DateField,
+    SimpleList,
 } from "react-admin";
 
 
@@ -35,6 +39,14 @@ export const FieldCampaignShow = () => (
         <SimpleShowLayout>
             <TextField source="name" />
             <TextField source="description" />
+            <ReferenceManyField label="Sites" reference="sites" target="field_campaign_id">
+                <SimpleList
+                    primaryText={record => record.name}
+                    secondaryText={record => `${record.description}`}
+                    tertiaryText={record => new Date(record.created_at).toLocaleDateString()}
+                    linkType={record => record.canEdit ? "edit" : "show"}
+                />
+            </ReferenceManyField>
         </SimpleShowLayout>
     </Show>
 );

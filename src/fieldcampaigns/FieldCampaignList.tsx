@@ -7,6 +7,8 @@ import {
     CreateButton,
     ExportButton,
     ReferenceManyCount,
+    DateField,
+    ReferenceField,
 } from "react-admin";
 
 
@@ -23,10 +25,11 @@ const FieldCampaignListActions = () => {
 export const FieldCampaignList = () => {
 
     return (
-        <List actions={<FieldCampaignListActions />}>
+        <List actions={<FieldCampaignListActions />} disableSyncWithLocation >
             <Datagrid rowClick="show">
                 <TextField source="name" />
                 <TextField source="description" />
+                <DateField source="created_at" />
                 <ReferenceManyCount
                     label="Sites"
                     reference="sites"
