@@ -105,13 +105,6 @@ const App = () => {
                         {...fieldcampaigns} />
                     <Resource name="sites" {...sites} />
                     <Resource name="subsites" {...subsites} />
-                    {permissions ? (
-                        <>
-                            {permissions === 'admin' ? (
-                                <Resource name="users" {...users} />
-                            ) : null}
-                        </>
-                    ) : null}
                 </>
             )}
         </Admin>

@@ -17,7 +17,7 @@ import {
     useRedirect,
     ChipField,
 } from "react-admin";
-import { LocationFieldPoints } from "../maps/Points";
+import { LocationFieldPointsShow } from "../maps/Points";
 import { Box } from '@mui/material';
 
 const SiteTitle = () => {
@@ -90,7 +90,7 @@ export const SiteShow = () => (
                     linkType={record => record.canEdit ? "edit" : "show"}
                 />
             </ReferenceManyField>
-            <LocationFieldPoints source="subsites" resource_key="site_id" />
+            <LocationFieldPointsShow source="subsites" resource_key="site_id" />
 
         </SimpleShowLayout>
     </Show>

@@ -14,6 +14,7 @@ import {
     DateField,
     ReferenceField,
 } from "react-admin";
+import { LocationFieldPointsList } from "../maps/Points";
 
 
 const SiteListActions = () => {
@@ -27,9 +28,18 @@ const SiteListActions = () => {
 }
 
 export const SiteList = () => {
+    const { data, total, isLoading, error } = useGetList(
+        'sites', {}
+    );
 
+    if (isLoading) return <p>Loading sites...</p>;
+    console.log(data);
     return (
         <List actions={<SiteListActions />} disableSyncWithLocation>
+            <LocationFieldPointsList
+                records={data}
+                resource="sites"
+            />
             <Datagrid rowClick="show">
                 <TextField source="name" />
                 <TextField source="description" />

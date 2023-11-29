@@ -14,7 +14,7 @@ import {
     SimpleList,
     CreateButton,
 } from "react-admin";
-import { LocationFieldPoints } from "../maps/Points";
+import { LocationFieldPointsShow } from "../maps/Points";
 
 const FieldCampaignTitle = () => {
     const record = useRecordContext();
@@ -56,7 +56,7 @@ export const FieldCampaignShow = () => (
         <SimpleShowLayout>
             <TextField source="name" />
             <TextField source="description" />
-            <LocationFieldPoints source="sites" resource_key="field_campaign_id" />
+            <LocationFieldPointsShow source="sites" resource_key="field_campaign_id" />
             <ReferenceManyField label="Sites" reference="sites" target="field_campaign_id">
                 <SimpleList
                     primaryText={record => record.name}
