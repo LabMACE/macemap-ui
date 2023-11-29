@@ -30,6 +30,8 @@ export const LocationFieldPointsShow = ({ source, resource_key }) => {
     if (!record) return null;
     if (!data) return null;
 
+    // Don't render map if there is no data
+    if (data.length === 0) return "No data to map";
 
     return (
         <MapContainer
@@ -69,6 +71,8 @@ export const LocationFieldPointsShow = ({ source, resource_key }) => {
 export const LocationFieldPointsList = ({ records, resource }) => {
     const redirect = useRedirect();
     const createPath = useCreatePath();
+    // Don't render map if there is no data
+    if (records.length === 0) return "No data to map";
 
     return (
         <MapContainer
