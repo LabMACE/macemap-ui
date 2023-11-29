@@ -12,7 +12,8 @@ import Keycloak, {
     KeycloakTokenParsed,
     KeycloakInitOptions,
 } from 'keycloak-js';
-import { keycloakAuthProvider, httpClient } from 'ra-keycloak';
+import { httpClient } from 'ra-keycloak';
+import { keycloakAuthProvider } from './authProvider';
 import Layout from './Layout';
 import users from './users';
 import axios from 'axios';
@@ -20,6 +21,7 @@ import addUploadCapabilities from './addUploadFeature'
 import sites from "./sites";
 import subsites from "./subsites";
 import fieldcampaigns from './fieldcampaigns';
+
 const initOptions: KeycloakInitOptions = { onLoad: 'login-required' };
 
 const getPermissions = (decoded: KeycloakTokenParsed) => {
@@ -50,6 +52,21 @@ const App = () => {
                 // Initialize Keycloak here, once you have the configuration
                 const keycloakClient = new Keycloak(keycloakConfig);
                 await keycloakClient.init(initOptions);
+
+                keycloakClient.onTokenExpired = () => {
+                    keycloakClient
+                        .updateToken(60) // Specify a time in seconds when to refresh the token
+                        .then((refreshed) => {
+                            if (refreshed) {
+                                console.log('Token refreshed successfully');
+                            } else {
+                                console.log('Token not refreshed, or not needed');
+                            }
+                        })
+                        .catch(() => {
+                            console.error('Error refreshing token');
+                        });
+                };
                 authProvider.current = keycloakAuthProvider(keycloakClient, {
                     onPermissions: getPermissions,
                 });

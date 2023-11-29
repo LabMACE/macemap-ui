@@ -1,17 +1,26 @@
-import { useRecordContext, useRedirect, Show, SimpleShowLayout, TextField, useGetManyReference, useCreatePath, useEffect } from 'react-admin';
-import { MapContainer, TileLayer, Marker, Popup, Polygon, Tooltip, useMap } from 'react-leaflet';
-import { CRS } from 'leaflet';
-import L from 'leaflet';
+import {
+    useRecordContext,
+    useRedirect,
+    useGetManyReference,
+    useCreatePath
+} from 'react-admin';
+import {
+    MapContainer,
+    Marker,
+    Popup,
+    Polygon,
+    Tooltip
+} from 'react-leaflet';
 import { Link } from 'react-router-dom';
 import { BaseLayers } from './Layers';
 
-export const LocationFieldPoints = ({ source }) => {
+export const LocationFieldPoints = ({ source, resource_key }) => {
     const record = useRecordContext();
     const createPath = useCreatePath();
     const { data, isLoading, error } = useGetManyReference(
-        'sensors',
+        source,
         {
-            target: 'area_id',
+            target: resource_key,
             id: record.id,
         }
     );
@@ -22,25 +31,26 @@ export const LocationFieldPoints = ({ source }) => {
 
     return (
         <MapContainer
-            style={{ width: '100%', height: '700px' }}
-            bounds={record["geom"]["coordinates"]}
+            style={{ width: '80%', height: '400px' }}
+            // Use the bounds of all points to set the bounds of the map or null if no points
+            bounds={data.length > 0 ? data.map((point) => point["geom"]["coordinates"]) : null}
             scrollWheelZoom={true}
         >
             <BaseLayers />
             {isLoading ? null :
                 (
-                    data.map((sensor, index) => (
+                    data.map((point, index) => (
                         < Marker
                             key={index}
-                            position={sensor["geom"]["coordinates"]}
-                        ><Tooltip permanent>{sensor["name"]}</Tooltip>
+                            position={point["geom"]["coordinates"]}
+                        ><Tooltip permanent>{point["name"]}</Tooltip>
                             <Popup>
-                                <b>{sensor["name"]}</b>
+                                <b>{point["name"]}</b>
                                 <br />
-                                {sensor["description"]}
+                                {point["description"]}
                                 <br /><br />
-                                <Link to={createPath({ type: 'show', resource: 'sensors', id: sensor['id'] })}>
-                                    Go to Sensor</Link>
+                                <Link to={createPath({ type: 'show', resource: source, id: point['id'] })}>
+                                    Go to resource</Link>
 
                             </Popup>
                         </Marker>

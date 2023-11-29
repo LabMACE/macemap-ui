@@ -26,13 +26,13 @@ const SiteCreate = () => {
     };
 
     return (
-        <Create >
+        <Create redirect="list">
             <SimpleForm toolbar={<SiteCreateToolbar />} >
                 <TextField source="id" />
                 <TextInput source="name" validate={[required()]} />
                 <TextInput source="description" />
-                <NumberInput source="latitude" validate={[required()]} />
-                <NumberInput source="longitude" validate={[required()]} />
+                <NumberInput source="latitude" />
+                <NumberInput source="longitude" />
                 <NumberInput source="elevation" />
                 <ReferenceInput source="field_campaign_id" reference="fieldcampaigns" >
                     <SelectInput

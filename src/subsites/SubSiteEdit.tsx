@@ -21,9 +21,8 @@ const SubSiteEdit = () => {
                     <SelectInput
                         label="Site"
                         source="site_id"
-                        optionText="name"
+                        optionText={(record) => `${record.name} (${record.field_campaign.name})`}
                         validate={required()}
-                        disabled={true}
                     />
                 </ReferenceInput>
                 <TextInput source="name" validate={[required()]} />
@@ -34,7 +33,7 @@ const SubSiteEdit = () => {
                 <ArrayInput label="Temperature Measurements" source="temperatures">
                     <SimpleFormIterator inline>
                         <TextInput source="id" style={{ display: 'none' }} />
-                        <TextInput
+                        <NumberInput
                             label="Measurement (°C)"
                             source="measurement_celsius"
                             validate={[required()]}
@@ -66,6 +65,17 @@ const SubSiteEdit = () => {
                                 { id: '2_5_cm', name: '2 to 5 cm' },
                                 { id: '10_15_cm', name: '10 to 15 cm' }
                             ]}
+                        />
+                    </SimpleFormIterator>
+                </ArrayInput>
+                <ArrayInput label="Luminosity Measurements" source="luminosities">
+                    <SimpleFormIterator inline>
+                        <TextInput source="id" style={{ display: 'none' }} />
+                        <TextInput
+                            label="Luminosity (lux)"
+                            source="measurement_lux"
+                            validate={[required()]}
+                            helperText={false}
                         />
                     </SimpleFormIterator>
                 </ArrayInput>

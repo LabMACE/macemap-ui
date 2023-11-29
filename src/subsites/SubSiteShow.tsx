@@ -15,6 +15,8 @@ import {
     SimpleList,
     ArrayField,
     SingleFieldList,
+    Datagrid,
+    FunctionField,
     ChipField,
 } from "react-admin";
 
@@ -38,28 +40,67 @@ const SubSiteShowActions = () => {
     );
 }
 
+const thermometerMapper = {
+    'black': 'Black',
+    'white': 'White',
+};
+
+const typeMapper = {
+    'air': 'Air',
+    'soil': 'Soil',
+};
+
+const depthMapper = {
+    'na': 'N/A',
+    '2_5_cm': '2 to 5 cm',
+    '10_15_cm': '10 to 15 cm',
+};
+
 export const SubSiteShow = () => (
     <Show title={<SubSiteTitle />} actions={<SubSiteShowActions />}>
         <SimpleShowLayout>
+            <TextField label="Subsite name" source="name" />
             <ReferenceField
-                label="Site name"
+                label="Site"
                 source='site_id'
                 reference='sites'
                 link="show"
             >
-                <TextField source='name' />
+                <ChipField source='name' />
             </ReferenceField>
-            <TextField source="name" />
             <TextField source="description" />
-            <NumberField source="elevation" />
             <NumberField source="latitude" />
             <NumberField source="longitude" />
+            <NumberField source="elevation" />
             <DateField source="created_at" />
-            <ArrayField source="temperatures">
-                <SingleFieldList linkType={false}>
-                    <ChipField source="measurement_celsius" size="small" />
-                </SingleFieldList>
+            <ArrayField source="luminosities">
+                <Datagrid bulkActionButtons={false} style={{ tableLayout: 'fixed', width: '20%' }}>
+                    <NumberField source="measurement_lux" label="Measurement (lux)" />
+                </Datagrid>
             </ArrayField>
+            <ArrayField source="temperatures">
+                <Datagrid bulkActionButtons={false} style={{ tableLayout: 'fixed', width: '50%' }}>
+                    <NumberField source="measurement_celsius" label="Measurement (°C)" />
+                    <FunctionField
+                        render={
+                            record => `${typeMapper[record.type]}`
+                        }
+                    />
+                    <FunctionField
+                        label="Depth (cm)"
+                        render={
+                            record => `${depthMapper[record.depth_from_surface_cm]}`
+                        }
+                    />
+                    <FunctionField
+                        label="Thermometer"
+                        render={
+                            record => `${thermometerMapper[record.thermometer_characteristic]}`
+                        }
+                    />
+                </Datagrid>
+            </ArrayField>
+
         </SimpleShowLayout>
     </Show>
 );

@@ -5,42 +5,19 @@ import {
     TextField,
     TextInput,
     required,
-    useCreate,
     Toolbar,
     SaveButton,
-    useRedirect,
     NumberInput,
     ReferenceInput,
     SelectInput,
-    useRecordContext,
-    useGetOne,
     DateTimeInput,
+    ArrayInput,
+    SimpleFormIterator,
+
+
 } from 'react-admin';
-import { useState } from 'react';
-import { useWatch } from 'react-hook-form';
+
 const SubSiteCreate = props => {
-    // const isReturned = useWatch();
-    // const siteRecord = useRecordContext();
-    // if (!isReturned) return null;
-    // console.log(isReturned);
-    // console.log("SubSiteCreate: props: ", props.site);
-
-
-    // if (isLoading) return null;
-    // console.log("SubSiteCreate: fieldcampaign: ", data);
-
-    // console.log("SubSiteCreate: site: ", data);
-
-    const getFieldCampaignName = (field_id) => {
-        // Helper to get the field name from the given ID (in the site record)
-        const { data, isLoading, error, refetch } = useGetOne(
-            'fieldcampaigns',
-            { id: field_id },
-        );
-        if (isLoading) return null;
-
-        return data.name;
-    }
     const SubSiteCreateToolbar = props => {
         return (
             <Toolbar {...props} >
@@ -50,23 +27,72 @@ const SubSiteCreate = props => {
     };
 
     return (
-        <Create mutationMode="pessimistic">
-            <SimpleForm toolbar={<SubSiteCreateToolbar />} >
+        <Create redirect="show" mutationMode="pessimistic">
+            <SimpleForm >
                 <ReferenceInput source="site_id" reference="sites" >
                     <SelectInput
-                        label="Site name of new subsite"
+                        label="Site"
                         source="site_id"
-                        optionText={(record) => `${record.name} (${getFieldCampaignName(record.field_campaign_id)})`}
+                        optionText={(record) => `${record.name} (${record.field_campaign.name})`}
                         validate={required()}
-                        disabled={true} />
+                    />
                 </ReferenceInput>
-                <TextField source="id" />
                 <TextInput source="name" validate={[required()]} />
-                <TextInput source="description" />
-                <DateTimeInput source="recorded_at" />
+                <TextInput source="description" multiline />
+                <DateTimeInput source="recorded_at" validate={[required()]} />
                 <NumberInput source="latitude" validate={[required()]} />
                 <NumberInput source="longitude" validate={[required()]} />
                 <NumberInput source="elevation" />
+                <ArrayInput label="Temperature Measurements" source="temperatures">
+                    <SimpleFormIterator inline>
+                        <TextInput source="id" style={{ display: 'none' }} />
+
+                        <NumberInput
+                            label="Measurement (°C)"
+                            source="measurement_celsius"
+                            validate={[required()]}
+                            helperText={false}
+                        />
+                        <SelectInput
+                            source="thermometer_characteristic"
+                            helperText={false}
+                            validate={[required()]}
+                            choices={[
+                                { id: 'black', name: 'Black' },
+                                { id: 'white', name: 'White' }
+                            ]}
+                        />
+                        <SelectInput
+                            source="type"
+                            helperText={false}
+                            validate={[required()]}
+                            choices={[
+                                { id: 'air', name: 'Air' },
+                                { id: 'soil', name: 'Soil' }
+                            ]}
+                        />
+                        <SelectInput
+                            source="depth_from_surface_cm"
+                            helperText={false}
+                            choices={[
+                                { id: 'na', name: 'N/A' },
+                                { id: '2_5_cm', name: '2 to 5 cm' },
+                                { id: '10_15_cm', name: '10 to 15 cm' }
+                            ]}
+                        />
+                    </SimpleFormIterator>
+                </ArrayInput>
+                <ArrayInput label="Luminosity Measurements" source="luminosities">
+                    <SimpleFormIterator inline>
+                        <TextInput source="id" style={{ display: 'none' }} />
+                        <TextInput
+                            label="Luminosity (lux)"
+                            source="measurement_lux"
+                            validate={[required()]}
+                            helperText={false}
+                        />
+                    </SimpleFormIterator>
+                </ArrayInput>
             </SimpleForm>
         </Create >
     )

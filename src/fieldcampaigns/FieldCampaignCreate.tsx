@@ -23,7 +23,7 @@ const FieldCampaignCreate = () => {
     };
 
     return (
-        <Create >
+        <Create redirect="list">
             <SimpleForm toolbar={<FieldCampaignCreateToolbar />} >
                 <TextField source="id" />
                 <TextInput source="name" validate={[required()]} />
