@@ -34,15 +34,7 @@ const LicorTitle = () => {
     return <span>{record.place} Area</span>;
 };
 
-const SubLicorCreateButton = ({ site }) => {
-    // Redirect to the edit page of the newly created post forwarding the
-    // site ID
-    return (<CreateButton
-        label="Create subsite in this site"
-        resource='subsites'
-        state={{ record: { site_id: site } }} />);
 
-};
 
 const LicorShowActions = () => {
     const record = useRecordContext();
@@ -53,7 +45,6 @@ const LicorShowActions = () => {
     return (
         <TopToolbar>
             {permissions === 'admin' && <>
-                <SubLicorCreateButton site={record.id} />
                 <EditButton />
                 <DeleteButton
                     redirect="list" />
@@ -76,31 +67,38 @@ const dataSetURL = () => {
         })}>{record.key}</Link>;
 }
 
-export const LicorShow = () => (
-    <Show title={<LicorTitle />} actions={<LicorShowActions />}>
-        <SimpleShowLayout>
 
-            <TextField source="name" />
-            <TextField source="description" />
-            <DateField source="recorded_at" showTime={true} />
-            <DateField source="created_at" label="Uploaded at" showTime={true} />
-            <FileField
-                source="url"
-                target="_blank"
-                title="name"
-                download={true}
-                label="Download"
-            />
-            <ArrayField source="measurements">
-                <Datagrid bulkActionButtons={false}>
-                    <FunctionField label="key" render={dataSetURL} />
-                    <TextField source="key" label="Dataset" />
-                    <TextField source="measurements.remark" />
-                </Datagrid>
-            </ArrayField>
 
-        </SimpleShowLayout>
-    </Show>
-);
+export const LicorShow = () => {
+
+
+    return (
+        <Show title={<LicorTitle />} actions={<LicorShowActions />}>
+            <SimpleShowLayout>
+                <TextField source="name" />
+                <TextField source="description" />
+                <DateField source="recorded_at" showTime={true} />
+                <DateField source="created_at" label="Uploaded at" showTime={true} />
+                <FileField
+                    source="url"
+                    target="_blank"
+                    title="name"
+                    download={true}
+                    label="Download"
+                />
+                <ReferenceField source="site_id" reference="sites" link="show">
+                    <FunctionField label="Site" render={record => `${record.field_campaign.name}: ${record.name}`} />
+
+                </ReferenceField>
+                <ArrayField source="measurements">
+                    <Datagrid bulkActionButtons={false}>
+                        <FunctionField label="key" render={dataSetURL} />
+                        <TextField label="Remark" source="measurements.remark" />
+                    </Datagrid>
+                </ArrayField>
+            </SimpleShowLayout>
+        </Show>
+    )
+};
 
 export default LicorShow;

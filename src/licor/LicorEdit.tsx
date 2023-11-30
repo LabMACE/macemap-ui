@@ -12,19 +12,16 @@ import {
 
 const LicorEdit = () => {
     return (
-        <Edit redirect="list">
+        <Edit redirect="show">
             <SimpleForm >
                 <TextInput source="name" validate={[required()]} />
                 <TextInput source="description" />
-                <NumberInput source="latitude" />
-                <NumberInput source="longitude" />
-                <NumberInput source="elevation" />
-                <ReferenceInput source="field_campaign_id" reference="fieldcampaigns" >
+                <ReferenceInput source="site_id" reference="sites" >
                     <SelectInput
-                        label="Field Campaign"
-                        source="field_campaign_id"
-                        optionText="name"
-                        validate={required()} />
+                        label="Site"
+                        source="site_id"
+                        optionText={(record) => `${record.name} (${record.field_campaign.name})`}
+                    />
                 </ReferenceInput>
             </SimpleForm>
         </Edit>

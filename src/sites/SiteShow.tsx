@@ -90,7 +90,17 @@ export const SiteShow = () => (
                     linkType={record => record.canEdit ? "edit" : "show"}
                 />
             </ReferenceManyField>
-
+            <ReferenceManyField
+                label="Associated LI-COR Datasets"
+                reference="licor"
+                target="site_id">
+                <SimpleList
+                    primaryText={record => record.name}
+                    secondaryText={record => `${record.description}`}
+                    tertiaryText={record => new Date(record.recorded_at).toLocaleDateString()}
+                    linkType={record => record.canEdit ? "edit" : "show"}
+                />
+            </ReferenceManyField>
         </SimpleShowLayout>
     </Show>
 );

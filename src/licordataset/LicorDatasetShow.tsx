@@ -23,6 +23,7 @@ import {
 } from "react-admin";
 import { LocationFieldPointsShow } from "../maps/Points";
 import { Box } from '@mui/material';
+import { Typography } from 'react-admin';
 import {
     LineChart,
     Line,
@@ -57,97 +58,71 @@ export const LicorDatasetShow = () => (
                 <ChipField source='name' />
             </ReferenceField>
             <TextField source="measurements.reps.REP_1.header" />
-            <DataPlot />
-            {/* <ArrayField source="measurements.reps.REP_1.summary.timestamp">
-                <Datagrid bulkActionButtons={false} style={{ tableLayout: 'fixed', width: '50%' }}>
-                    <NumberField source="measurement_celsius" label="Measurement (°C)" />
 
-                </Datagrid>
-            </ArrayField> */}
+            REP1:
+
+            <DataPlot rep="REP_1" />
+            <DataPlot rep="REP_2" />
+            <DataPlot rep="REP_3" />
         </SimpleShowLayout>
     </Show>
 );
 
-export const DataPlot = () => {
+export const DataPlot = ({ rep }) => {
     const record = useRecordContext();
     if (!record) return null;
-    console.log(record.measurements.reps.REP_1.data);
-    const data = record.measurements.reps.REP_1.data;
-    // const restructuredData = data.timestamp.map((timestamp, index) => ({
-    //     timestamp,
-    //     chamber_p: data.chamber_p[index],
-    //     chamber_p_t: data.chamber_p_t[index],
-    // }));
-    const restructuredData = data.timestamp.map((timestamp, index) => {
+    const repData = record.measurements.reps[rep].data;
+    console.log(repData);
+    const restructuredData = repData.timestamp.map((timestamp, index) => {
         const newObj = { timestamp };
 
-        Object.keys(data).forEach((key) => {
+        Object.keys(repData).forEach((key) => {
             if (key !== 'timestamp') {
-                newObj[key] = data[key][index];
+                newObj[key] = repData[key][index];
             }
         });
 
         return newObj;
     });
 
-
     return (
-        <ResponsiveContainer width="95%" height={400}>
-            <LineChart
-                width={1000}
-                height={400}
-                data={restructuredData}
-                margin={{
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 5,
-                }}
-            >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="timestamp" >
-                    <Label value="Time" offset={-5} position="insideBottom" />
-                </XAxis>
-                <YAxis yAxisId="left" domain={['chamber_p']} >
+        <Box
+            marginBottom={"40px"}
+            display={"flex"}
+            flexDirection={"column"}
+            alignItems={"center"}
+        >
+            <strong style={{ paddingLeft: "10%", fontSize: "20px" }}>{rep}</strong>
+            <ResponsiveContainer width="95%" height={400}>
 
-                </YAxis>
-                <YAxis yAxisId="right" domain={['chamber_p_t']} orientation="right" >
+                <LineChart
+                    width={1000}
+                    height={400}
+                    data={restructuredData}
+                    margin={{
+                        top: 5,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                    }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="timestamp" >
+                        <Label value="Time" offset={-5} position="insideBottom" />
+                    </XAxis>
+                    <YAxis yAxisId="left" domain={['chamber_p']} >
 
-                </YAxis>
-                <Tooltip />
-                <Legend />
-                <Line yAxisId="left" type="monotone" dataKey="chamber_p" stroke="#8884d8" activeDot={{ r: 8 }} />
-                <Line yAxisId="right" type="monotone" dataKey="chamber_p_t" stroke="#82ca9d" />
-            </LineChart>
-        </ResponsiveContainer>
+                    </YAxis>
+                    <YAxis yAxisId="right" domain={['chamber_p_t']} orientation="right" >
 
-        // <LineChart
-        //     width={800}
-        //     height={400}
-        //     data={restructuredData}
-        //     margin={{
-        //         top: 5,
-        //         right: 30,
-        //         left: 20,
-        //         bottom: 5,
-        //     }}
-        // >
-        //     <CartesianGrid strokeDasharray="3 3" />
-        //     <XAxis dataKey="timestamp" >
-        //         <Label value="Time" offset={-5} position="insideBottom" />
-        //     </XAxis>
-        //     <YAxis yAxisId="left" domain={['soil_t']}>
-        //         <Label value="Temperature (°C)" angle={-90} offset={5} position="insideLeft" />
-        //     </YAxis>
-        //     <YAxis yAxisId="right" domain={['chamber_p']}>
-        //         <Label value="Temperature (°C)" angle={-90} offset={5} position="insideLeft" />
-        //     </YAxis>
-        //     <Tooltip />
-        //     <Legend />
-        //     <Line yAxisId="left" type="monotone" dataKey="chamber_p" stroke="#8884d8" activeDot={{ r: 8 }} />
-        //     <Line yAxisId="right" type="monotone" dataKey="chamber_p_t" stroke="#ff0000" activeDot={{ r: 8 }} />
-        // </LineChart >
-
+                    </YAxis>
+                    <Tooltip />
+                    <Legend />
+                    <Line yAxisId="left" type="monotone" dataKey="chamber_p" stroke="#8884d8" activeDot={{ r: 8 }} />
+                    <Line yAxisId="right" type="monotone" dataKey="chamber_p_t" stroke="#82ca9d" />
+                </LineChart>
+            </ResponsiveContainer>
+        </Box>
     );
 
 };
