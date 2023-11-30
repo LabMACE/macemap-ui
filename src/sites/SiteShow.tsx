@@ -40,7 +40,6 @@ const SubSiteCreateButton = ({ site }) => {
 const SiteShowActions = () => {
     const record = useRecordContext();
     if (!record) return null;
-    console.log(record);
     const { permissions } = usePermissions();
 
     const redirect = useRedirect();
@@ -79,6 +78,7 @@ export const SiteShow = () => (
                 <ChipField source='name' />
 
             </ReferenceField>
+            <LocationFieldPointsShow source="subsites" resource_key="site_id" />
             <ReferenceManyField
                 label="Sub-Sites"
                 reference="subsites"
@@ -86,11 +86,10 @@ export const SiteShow = () => (
                 <SimpleList
                     primaryText={record => record.name}
                     secondaryText={record => `${record.description}`}
-                    tertiaryText={record => new Date(record.created_at).toLocaleDateString()}
+                    tertiaryText={record => new Date(record.recorded_at).toLocaleDateString()}
                     linkType={record => record.canEdit ? "edit" : "show"}
                 />
             </ReferenceManyField>
-            <LocationFieldPointsShow source="subsites" resource_key="site_id" />
 
         </SimpleShowLayout>
     </Show>

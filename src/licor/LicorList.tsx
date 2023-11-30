@@ -13,11 +13,18 @@ import {
     Count,
     DateField,
     ReferenceField,
+    useRecordContext,
+    FileField,
 } from "react-admin";
-import { LocationFieldPointsList } from "../maps/Points";
+import { Link } from 'react-router-dom';
 
+const LICORDownloadName = () => {
+    const record = useRecordContext();
+    const downloadLink = `/api/licor/${record.id}/data`;
+    return downloadLink
+};
 
-const SiteListActions = () => {
+const LicorListActions = () => {
     const { permissions } = usePermissions();
     return (
         <TopToolbar>
@@ -27,32 +34,28 @@ const SiteListActions = () => {
     );
 }
 
-export const SiteList = () => {
+export const LicorList = () => {
     const { data, total, isLoading, error } = useGetList(
         'sites', {}
     );
 
     if (isLoading) return <p>Loading sites...</p>;
     console.log(data);
+
     return (
-        <List actions={<SiteListActions />} disableSyncWithLocation>
-            <LocationFieldPointsList
-                records={data}
-                resource="sites"
-            />
+        <List actions={<LicorListActions />} disableSyncWithLocation>
             <Datagrid rowClick="show">
                 <TextField source="name" />
                 <TextField source="description" />
-                <NumberField source="latitude" />
-                <NumberField source="longitude" />
-                <DateField source="created_at" />
-                <ReferenceField
-                    source='field_campaign_id'
-                    reference='fieldcampaigns'
-                    link="show"
-                >
-                    <TextField source='name' />
-                </ReferenceField>
+                <DateField source="recorded_at" showTime={true} />
+                <FileField
+                    source="url"
+                    target="_blank"
+                    title="name"
+                    download={true}
+                    label="Download"
+                />
+
             </Datagrid>
         </List>
     );
@@ -60,4 +63,4 @@ export const SiteList = () => {
 
 
 
-export default SiteList;
+export default LicorList;

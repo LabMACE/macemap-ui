@@ -28,6 +28,8 @@ services:
       - DB_PREFIX=postgresql+asyncpg
     depends_on:
         - macemap-db
+    ports:
+      - "8001:8000"
     volumes:
       - ../mace-api/app:/app/app
 
@@ -44,6 +46,8 @@ services:
       - "traefik.http.services.macemap-bff.loadbalancer.server.port=8000"
     volumes:
       - ../macemap-bff/app:/app/app
+    ports:
+      - "8002:8000"
     entrypoint: ["uvicorn", "--host=0.0.0.0",
               "--timeout-keep-alive=0", "app.main:app", "--reload"]
 

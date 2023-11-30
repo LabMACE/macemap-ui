@@ -72,7 +72,7 @@ export const SubSiteShow = () => (
             <NumberField source="latitude" />
             <NumberField source="longitude" />
             <NumberField source="elevation" />
-            <DateField source="created_at" />
+            <DateField source="recorded_at" showTime={true} />
             <ArrayField source="luminosities">
                 <Datagrid bulkActionButtons={false} style={{ tableLayout: 'fixed', width: '20%' }}>
                     <NumberField source="measurement_lux" label="Measurement (lux)" />

@@ -13,8 +13,6 @@ import {
     DateTimeInput,
     ArrayInput,
     SimpleFormIterator,
-
-
 } from 'react-admin';
 
 const SubSiteCreate = props => {

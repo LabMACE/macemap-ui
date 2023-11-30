@@ -19,6 +19,8 @@ import users from './users';
 import axios from 'axios';
 import addUploadCapabilities from './addUploadFeature'
 import sites from "./sites";
+import licor from "./licor";
+import licordataset from "./licordataset";
 import subsites from "./subsites";
 import fieldcampaigns from './fieldcampaigns';
 
@@ -64,7 +66,7 @@ const App = () => {
                             }
                         })
                         .catch(() => {
-                            console.error('Error refreshing token');
+                            console.error('Error refreshinsubsitesg token');
                         });
                 };
                 authProvider.current = keycloakAuthProvider(keycloakClient, {
@@ -105,6 +107,8 @@ const App = () => {
                         {...fieldcampaigns} />
                     <Resource name="sites" {...sites} />
                     <Resource name="subsites" {...subsites} />
+                    <Resource name="licor" {...licor} />
+                    <Resource name="licordataset" {...licordataset} />
                 </>
             )}
         </Admin>

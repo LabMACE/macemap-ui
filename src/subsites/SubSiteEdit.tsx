@@ -10,7 +10,7 @@ import {
     SelectInput,
     ArrayInput,
     SimpleFormIterator,
-
+    DateTimeInput,
 } from 'react-admin';
 
 const SubSiteEdit = () => {
@@ -27,6 +27,7 @@ const SubSiteEdit = () => {
                 </ReferenceInput>
                 <TextInput source="name" validate={[required()]} />
                 <TextInput source="description" multiline />
+                <DateTimeInput source="recorded_at" validate={[required()]} />
                 <NumberInput source="latitude" validate={[required()]} />
                 <NumberInput source="longitude" validate={[required()]} />
                 <NumberInput source="elevation" />
